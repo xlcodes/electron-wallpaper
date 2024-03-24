@@ -4,6 +4,7 @@ import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
 
 import './ipcMian/index'
+import { createTray } from './tray'
 
 function createWindow(): void {
   const mainWindow = new BrowserWindow({
@@ -14,6 +15,8 @@ function createWindow(): void {
     resizable: false,
     alwaysOnTop: true,
     autoHideMenuBar: true,
+    // 隐藏window任务栏图标
+    skipTaskbar: true,
     ...(process.platform === 'linux' ? { icon } : {}),
     webPreferences: {
       preload: join(__dirname, '../preload/index.js'),
@@ -47,6 +50,13 @@ function createWindow(): void {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(() => {
+  // 创建任务栏图标
+  createTray(createWindow)
+  // 隐藏苹果docker图标
+  if (process.platform === 'darwin') {
+    app.dock.hide()
+  }
+
   // Set app user model id for windows
   electronApp.setAppUserModelId('com.electron')
 
