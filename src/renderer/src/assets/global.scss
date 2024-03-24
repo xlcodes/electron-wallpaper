@@ -1,0 +1,13 @@
+.drag, body {
+  -webkit-app-region: drag;
+}
+input,
+button,
+textarea,
+.no-drag {
+  -webkit-app-region: no-drag;
+}
+
+body {
+  @apply w-screen h-screen bg-gray-400;
+}
